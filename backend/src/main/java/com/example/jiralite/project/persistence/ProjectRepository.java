@@ -6,10 +6,14 @@ import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface ProjectRepository extends JpaRepository<Project, UUID> {
-    Optional<Project> findByProjectKey(String projectKey);
-
+    Optional<Project> findByProjectKeyIgnoreCase(String projectKey);
+    boolean existsByProjectKeyIgnoreCase(String projectKey);
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    Optional<Project> findWithLockByProjectKey(String projectKey);
+    @Query("select p from Project p where lower(p.projectKey) = lower(:key)")
+    Optional<Project> findByProjectKeyForUpdate(@Param("key") String key);
 }
+

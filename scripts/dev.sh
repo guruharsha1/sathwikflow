@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-
 docker compose up -d mysql mailpit
-echo "MySQL is on 3306 and Mailpit UI is on http://localhost:8025"
+echo "Start the API with: cd backend && mvn spring-boot:run"
+echo "Start the SPA with: cd frontend && npm install && npm run dev"
+

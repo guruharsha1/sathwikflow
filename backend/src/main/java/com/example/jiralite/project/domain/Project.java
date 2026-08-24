@@ -15,53 +15,20 @@ import java.util.UUID;
 @Entity
 @Table(name = "projects")
 public class Project extends AuditedEntity {
-    @Id
-    @GeneratedValue
-    private UUID id;
-
-    @Column(nullable = false, unique = true, updatable = false, length = 12)
-    private String projectKey;
-
-    @Column(nullable = false)
-    private String name;
-
-    @Column(length = 2000)
-    private String description;
-
-    @Column(nullable = false)
-    private long nextIssueNumber = 1;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "created_by")
-    private UserAccount createdBy;
-
-    protected Project() {
+    @Id @GeneratedValue private UUID id;
+    @Column(name = "project_key", nullable = false, unique = true, updatable = false) private String projectKey;
+    @Column(nullable = false) private String name;
+    @Column(length = 2000) private String description;
+    @Column(name = "next_issue_number", nullable = false) private long nextIssueNumber;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false) @JoinColumn(name = "created_by") private UserAccount createdBy;
+    protected Project() { }
+    public Project(String key, String name, String description, UserAccount creator) {
+        this.projectKey = key; this.name = name.trim(); this.description = blankToNull(description); this.createdBy = creator; this.nextIssueNumber = 1;
     }
-
-    public Project(String projectKey, String name, String description, UserAccount createdBy) {
-        this.projectKey = projectKey.toUpperCase();
-        this.name = name;
-        this.description = description;
-        this.createdBy = createdBy;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public String getProjectKey() {
-        return projectKey;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public long allocateIssueNumber() {
-        return nextIssueNumber++;
-    }
+    public long allocateIssueNumber() { return nextIssueNumber++; }
+    public void update(String name, String description) { this.name = name.trim(); this.description = blankToNull(description); }
+    private static String blankToNull(String value) { return value == null || value.isBlank() ? null : value.trim(); }
+    public UUID getId() { return id; } public String getProjectKey() { return projectKey; } public String getName() { return name; }
+    public String getDescription() { return description; } public long getNextIssueNumber() { return nextIssueNumber; } public UserAccount getCreatedBy() { return createdBy; }
 }
+

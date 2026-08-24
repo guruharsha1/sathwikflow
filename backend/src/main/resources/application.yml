@@ -2,22 +2,51 @@ spring:
   application:
     name: sathwikflow-api
   datasource:
-    url: ${DB_URL:jdbc:mysql://localhost:3306/sathwikflow}
-    username: ${DB_USERNAME:sathwik}
-    password: ${DB_PASSWORD:sathwik}
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/sathwikflow?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true}
+    username: ${SPRING_DATASOURCE_USERNAME:sathwikflow}
+    password: ${SPRING_DATASOURCE_PASSWORD:sathwikflow}
   jpa:
+    open-in-view: false
     hibernate:
       ddl-auto: validate
-    open-in-view: false
+    properties:
+      hibernate:
+        jdbc.time_zone: UTC
+        default_batch_fetch_size: 50
   flyway:
     enabled: true
-
+  mail:
+    host: ${SPRING_MAIL_HOST:localhost}
+    port: ${SPRING_MAIL_PORT:1025}
+    properties:
+      mail.smtp.auth: ${SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH:false}
+      mail.smtp.starttls.enable: ${SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE:false}
+  mvc:
+    problemdetails:
+      enabled: true
 management:
   endpoints:
     web:
       exposure:
         include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+sathwikflow:
+  security:
+    issuer: ${SATHWIKFLOW_SECURITY_ISSUER:sathwikflow}
+    audience: ${SATHWIKFLOW_SECURITY_AUDIENCE:sathwikflow-api}
+    access-token-minutes: ${SATHWIKFLOW_SECURITY_ACCESS_TOKEN_MINUTES:15}
+    refresh-token-days: ${SATHWIKFLOW_SECURITY_REFRESH_TOKEN_DAYS:7}
+    refresh-cookie-name: ${SATHWIKFLOW_SECURITY_REFRESH_COOKIE_NAME:SF_REFRESH}
+    cookie-secure: ${SATHWIKFLOW_SECURITY_COOKIE_SECURE:false}
+    allowed-origins: ${SATHWIKFLOW_SECURITY_ALLOWED_ORIGINS:http://localhost:5173}
+    rsa-private-key: ${SATHWIKFLOW_SECURITY_RSA_PRIVATE_KEY:}
+    rsa-public-key: ${SATHWIKFLOW_SECURITY_RSA_PUBLIC_KEY:}
+  notifications:
+    poll-delay-ms: ${SATHWIKFLOW_NOTIFICATIONS_POLL_DELAY_MS:30000}
+  demo:
+    seed: ${SATHWIKFLOW_DEMO_SEED:true}
+    password: ${SATHWIKFLOW_DEMO_PASSWORD:DemoPass123!}
 
-server:
-  error:
-    include-message: never

@@ -1,7 +1,4 @@
 package com.example.jiralite.workflow;
 
-public enum WorkflowCategory {
-    TODO,
-    IN_PROGRESS,
-    DONE
-}
+public enum WorkflowCategory { BACKLOG, TODO, IN_PROGRESS, IN_REVIEW, DONE }
+

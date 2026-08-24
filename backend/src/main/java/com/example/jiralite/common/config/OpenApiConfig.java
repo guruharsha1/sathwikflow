@@ -6,12 +6,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-class OpenApiConfig {
+public class OpenApiConfig {
     @Bean
     OpenAPI sathwikFlowOpenApi() {
-        return new OpenAPI().info(new Info()
-                .title("SathwikFlow API")
-                .version("v1")
-                .description("Project management API with project RBAC, workflows, issues, comments, and planning."));
+        return new OpenAPI().info(new Info().title("SathwikFlow API").version("v1")
+                .description("JWT-protected project, planning, issue, and workflow API."));
     }
 }
+
