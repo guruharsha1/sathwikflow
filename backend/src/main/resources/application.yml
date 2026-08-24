@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: sathwikflow-api
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/sathwikflow}
+    username: ${DB_USERNAME:sathwik}
+    password: ${DB_PASSWORD:sathwik}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+  flyway:
+    enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+server:
+  error:
+    include-message: never
